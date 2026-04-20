@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1E1E2E; /* Deep Navy */
+  --color-accent: #7C3AED; /* Violet */
+  --color-background: #F5F3FF; /* Lavender tint */
+  
+  --font-sans: "Inter", ui-sans-serif, system-ui;
+  
+  --radius-card: 12px;
+  --radius-button: 8px;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-primary font-sans antialiased;
+  }
+}
+
+/* Loading shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}

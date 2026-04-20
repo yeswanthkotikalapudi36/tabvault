@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // User data is isolated by their UID
+    match /users/{userId} {
+      // Helper: Check if user is signed in and accessing their own data
+      function isOwner(uid) {
+        return request.auth != null && request.auth.uid == uid;
+      }
+
+      match /profile {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && request.resource.data.createdAt == request.time;
+        allow update: if isOwner(userId);
+      }
+
+      match /collections/{collectionId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && request.resource.data.createdAt == request.time;
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
+      }
+
+      match /links/{linkId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && request.resource.data.savedAt == request.time;
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}

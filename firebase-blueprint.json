@@ -1,0 +1,55 @@
+{
+  "entities": {
+    "Profile": {
+      "title": "User Profile",
+      "description": "User preferences and basic info",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "theme": { "type": "string", "enum": ["light", "dark"] }
+      },
+      "required": ["email", "createdAt"]
+    },
+    "Collection": {
+      "title": "Collection",
+      "description": "Groups of related links",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "emoji": { "type": "string" },
+        "colorAccent": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "linkCount": { "type": "integer" }
+      },
+      "required": ["userId", "name", "emoji"]
+    },
+    "Link": {
+      "title": "Saved Link",
+      "description": "A single saved URL with metadata",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "url": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "thumbnail": { "type": "string" },
+        "favicon": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "note": { "type": "string" },
+        "collectionId": { "type": "string" },
+        "savedAt": { "type": "string", "format": "date-time" },
+        "lastVisitedAt": { "type": "string", "format": "date-time" },
+        "isRead": { "type": "boolean" }
+      },
+      "required": ["userId", "url", "title", "savedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/profile": { "schema": "Profile", "description": "Individual user profile" },
+    "/users/{userId}/collections/{collectionId}": { "schema": "Collection", "description": "User link collections" },
+    "/users/{userId}/links/{linkId}": { "schema": "Link", "description": "User saved links" }
+  }
+}
